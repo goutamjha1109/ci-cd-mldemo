@@ -1,0 +1,60 @@
+schema: '2.0'
+stages:
+  data_preparation:
+    cmd: python src/data_prep.py --config config/params.yaml
+    deps:
+    - path: config/params.yaml
+      hash: md5
+      md5: 122b61298e19a3d9abd01303d5b1eb11
+      size: 148
+    - path: src/data_prep.py
+      hash: md5
+      md5: 4eefcbe67f8a22157b534fe66691e76c
+      size: 965
+    params:
+      config/params.yaml:
+        data:
+          n_samples: 1000
+          test_size: 0.2
+          random_state: 40
+          path: data/churn.csv
+    outs:
+    - path: data/churn.csv
+      hash: md5
+      md5: 6b1cec7ab176a8972c39dfeb0e6d615c
+      size: 10654
+  train:
+    cmd: python src/train.py --config config/params.yaml
+    deps:
+    - path: config/params.yaml
+      hash: md5
+      md5: 122b61298e19a3d9abd01303d5b1eb11
+      size: 148
+    - path: data/churn.csv
+      hash: md5
+      md5: 6b1cec7ab176a8972c39dfeb0e6d615c
+      size: 10654
+    - path: src/train.py
+      hash: md5
+      md5: 1fb21a914fe57d77ffe431b8061a159d
+      size: 2818
+    params:
+      config/params.yaml:
+        data:
+          n_samples: 1000
+          test_size: 0.2
+          random_state: 40
+          path: data/churn.csv
+        model:
+          n_estimators: 100
+          max_depth: 10
+          random_state: 42
+    outs:
+    - path: metrics/metrics.json
+      hash: md5
+      md5: c90768587715ac5ca446b1aad99a0afb
+      size: 38
+    - path: model/model.pkl
+      hash: md5
+      md5: cfa64ce8e87978920713730f69911318
+      size: 1016564
